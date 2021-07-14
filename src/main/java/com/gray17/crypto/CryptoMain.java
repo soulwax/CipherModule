@@ -33,15 +33,14 @@ public class CryptoMain {
         // Reading data from user
         String message;
         String algorithm = "";
+        String userName = "user";
         String password = "changeit";
         if(args.length == 0) {
-            String userName = "admin";
-            String passArgs = "password";
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the message");
             message = scanner.nextLine();
 
-            authenticator.signUp(userName, passArgs);
+            authenticator.signUp(userName, password);
 
             System.out.println("Please enter username:");
             String inputUser = scanner.nextLine();
