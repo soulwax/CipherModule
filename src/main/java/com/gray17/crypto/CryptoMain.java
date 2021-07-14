@@ -60,9 +60,8 @@ public class CryptoMain {
 
             scanner.close();
 
-
+        // Example args input: SHA-256 user changeit Hi how are you
         } else {
-            // TODO: Process args accordingly
             algorithm += args[0];
             inputUser = args[1];
             inputPass = args[2];
@@ -75,6 +74,8 @@ public class CryptoMain {
             }
             message = argsAppended.toString();
             System.out.println("Dear " + inputUser + ", your message is: " + message);
+
+            //TODO: process wrong args
         }
         boolean status = authenticator.authenticateUser(inputUser, inputPass);
         if (status) {

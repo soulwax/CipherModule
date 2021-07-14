@@ -14,8 +14,7 @@
 - argument 2: password
 - argument 3...n: message to encrypt
 
-Remove provided default maven argument, add no arguments for execution and you will be prompted to give the args
-during execution.
+When no args are given for execution, a manual input method will appear.
 
 Supported encryption methods: SHA-256, SHA-1, MD5
 
@@ -30,5 +29,4 @@ Key Generator Method: DES
 3. Type in the "Command Line" option under "Parameters" -> "install" (without the "")
 4. For code execution: mvn exec:java. You can add a separate configuration or use step 3 by appending it to the command line.
 
-License: copyrighted, permission for private non-commercial use is granted.
-
+License: Public Domain
