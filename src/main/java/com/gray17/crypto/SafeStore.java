@@ -9,7 +9,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-
+// Currently, the SafeStore and Authenticator class are separate proofs of concept.
+// They are not connected in any way shape or form
 public class SafeStore {
     private final KeyStore keyStore;
 
@@ -39,7 +40,7 @@ public class SafeStore {
         java.io.FileOutputStream fos = new java.io.FileOutputStream("bin.key");
         keyStore.store(fos, passwd);
         System.out.println("Your key was successfully stored in a binary format inside the file \"bin.key\"");
-        System.out.println("Keep in mind that this functionality is separated from your previous login attempt and" +
+        System.out.println("Keep in mind that this functionality is separated from your previous login attempt and " +
                 "for now a proof of concept in itself.");
     }
 }
