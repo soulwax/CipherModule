@@ -2,12 +2,17 @@
 ### Warning: Experimental Code / Proof of Concept! Not yet intended for production use.
 ### You can't use it for anything useful unless you know what you're doing.
   
-## Features:
-Encrypts -args, outputs encrypted result into a log file.
-Use: execute jar by giving the following args:
+### Features:
+  - Encrypts -args, outputs encrypted result into a log file. 
+  - Authenticates a user using the current industry standard of salting and hash mapping.
+  - Manual input method.
 
-- argument 0: encryption method
-- argument 1...x: message to encrypt with said method
+
+### Arguments when not using manual input:
+- argument 0: encryption method (SHA-256, MD5, SHA-1)
+- argument 1: username
+- argument 2: password
+- argument 3...n: message to encrypt
 
 Remove provided default maven argument, add no arguments for execution and you will be prompted to give the args
 during execution.
