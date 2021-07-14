@@ -5,10 +5,13 @@
 ## Features:
 Encrypts -args, outputs encrypted result into a log file.
 Use: execute jar by giving the following args:
+
 argument 0: encryption method
+
 argument 1...x: message to encrypt with said method
 
 Supported encryption methods: SHA-256, SHA-1, MD5
+
 Key Generator Method: DES
 
 
