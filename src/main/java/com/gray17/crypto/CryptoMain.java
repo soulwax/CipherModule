@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -28,16 +27,35 @@ import java.util.Scanner;
 public class CryptoMain {
 
     private static SafeStore safeStore;
+    private static Authenticator authenticator;
     /** args: 0: [algorithm] 1...2...n: [message to digest] **/
     public static void main(String[] args) throws Exception {
         // Reading data from user
         String message;
         String algorithm = "";
+        String password = "changeit";
         if(args.length == 0) {
+            String userName = "admin";
+            String passArgs = "password";
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the message");
             message = scanner.nextLine();
-            System.out.println("Algorithm to use: (SHA-256, SHA-1, MD5)");
+
+            authenticator.signUp(userName, passArgs);
+
+            System.out.println("Please enter username:");
+            String inputUser = scanner.nextLine();
+
+            System.out.println("Please enter password:");
+            String inputPass = scanner.nextLine();
+
+            boolean status = authenticator.authenticateUser(inputUser, inputPass);
+            if (status) {
+                System.out.println("Logged in!");
+            } else {
+                System.out.println("Sorry, wrong username/password");
+            }
+            scanner.close();
             algorithm = scanner.nextLine();
         } else {
             algorithm += args[0];
