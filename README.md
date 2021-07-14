@@ -1,4 +1,4 @@
-# Crypto Module (any Java backend)
+# Cipher Module (any Java backend)
 ### Proof of Concept! 
 ### You should know what you're doing when you intend to use this module.
 ### Mostly snippets embedded into CatCraft.
