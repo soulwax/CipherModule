@@ -76,10 +76,8 @@ public class CryptoMain {
                 argsAppended.append(" ");
             }
             message = argsAppended.toString();
-            System.out.println("Dear " + inputUser + ", your message is: " + message);
-
-            //TODO: process wrong args
         }
+        System.out.println("Dear " + inputUser + ", your message is: " + message);
         boolean status = cryptoMain.authenticator.authenticateUser(inputUser, inputPass);
         if (status) {
             System.out.println("Logged in!");

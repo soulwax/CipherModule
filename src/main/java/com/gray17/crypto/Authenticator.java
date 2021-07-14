@@ -19,6 +19,8 @@ public class Authenticator {
     }
 
     /**
+     * The main function of this class.
+     * Using protected access modifier to add another degree of access control.
      * @param userName the username provided
      * @param password the corresponding password for the username to authenticate
      * @throws NoSuchAlgorithmException for an invalid crypto algorithm chosen
