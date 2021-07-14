@@ -2,7 +2,9 @@ package com.gray17.crypto;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.HashMap;
@@ -11,12 +13,19 @@ import java.util.Map;
 public class Authenticator {
 
     // TODO: NOT FOR PRODUCTION USE. SIMULATES DATABASE.
-    private Map<String, UserInfo> userDatabase = new HashMap<String,UserInfo>();
+    private final Map<String, UserInfo> userDatabase = new HashMap<>();
 
     public Authenticator() {
     }
 
-    protected void signUp(String userName, String password) throws Exception {
+    /**
+     * @param userName the username provided
+     * @param password the corresponding password for the username to authenticate
+     * @throws NoSuchAlgorithmException for an invalid crypto algorithm chosen
+     * @throws InvalidKeySpecException for an invalid key specification
+     */
+
+    protected void signUp(String userName, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String salt = getNewSalt();
         String encryptedPassword = getEncryptedPassword(password, salt);
         UserInfo user = new UserInfo();
@@ -26,23 +35,19 @@ public class Authenticator {
         saveUser(user);
     }
 
-    protected boolean authenticateUser(String inputUser, String inputPass) throws Exception {
+    protected boolean authenticateUser(String inputUser, String inputPass) throws NoSuchAlgorithmException, InvalidKeySpecException {
         UserInfo user = userDatabase.get(inputUser);
         if (user == null) {
             return false;
         } else {
             String salt = user.userSalt;
             String calculatedHash = getEncryptedPassword(inputPass, salt);
-            if (calculatedHash.equals(user.userEncryptedPassword)) {
-                return true;
-            } else {
-                return false;
-            }
+            return calculatedHash.equals(user.userEncryptedPassword);
         }
     }
 
     // Get a encrypted password using PBKDF2 hash algorithm
-    public String getEncryptedPassword(String password, String salt) throws Exception {
+    public String getEncryptedPassword(String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String algorithm = "PBKDF2WithHmacSHA1";
         int derivedKeyLength = 160; // for SHA1
         int iterations = 20000; // NIST specifies 10000
@@ -56,7 +61,7 @@ public class Authenticator {
     }
 
     // Returns base64 encoded salt
-    public String getNewSalt() throws Exception {
+    public String getNewSalt() throws NoSuchAlgorithmException {
         // Don't use Random!
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
         // NIST recommends minimum 4 bytes. We use 8.
