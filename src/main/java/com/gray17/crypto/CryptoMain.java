@@ -6,9 +6,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.Key;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -27,6 +27,7 @@ import java.util.Scanner;
 
 public class CryptoMain {
 
+    private static SafeStore safeStore;
     /** args: 0: [algorithm] 1...2...n: [message to digest] **/
     public static void main(String[] args) throws Exception {
         // Reading data from user
@@ -127,6 +128,11 @@ public class CryptoMain {
 
         //Write results
         writeEncryptionResults(logFileName, macResult);
+
+        //Init Java Certificate Storage Unit with default pass "changeit"
+
+        // TODO: ***WARNING*** NOT FOR PRODUCTION USE!
+        CryptoMain.initSafeStore("changeit");
     }
 
     private static void writeEncryptionResults(String fileName, byte[] results) {
@@ -189,5 +195,31 @@ public class CryptoMain {
      * Asymmetric: Different keys, but mathematically related
      * hence, retrieving the plaintext by decrypting cipher text is feasible
      * */
+
+    private static void initSafeStore(String plainTextPass) {
+        try {
+            CryptoMain.safeStore = new SafeStore();
+        } catch (KeyStoreException e) {
+            System.out.println("Your SafeStore object could not be initialized. Stack Trace for further information following...");
+            e.printStackTrace();
+        }
+
+        try {
+            CryptoMain.safeStore.initSafeStore(plainTextPass);
+        } catch (IOException e) {
+
+        } catch (CertificateException e) {
+            System.out.println("Sorry, your cert isn't valid, try again.");
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Invalid Algorithm was used. See stack trace for further information...");
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            System.out.println("Your key couldn't be stored. See stack trace for further information...");
+            e.printStackTrace();
+        } finally {
+            System.out.println("SafeStore Initialized successfully!");
+        }
+    }
 }
 

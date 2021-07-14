@@ -1,5 +1,5 @@
 # Crypto Module (any Java backend)
-### Warning: Experimental Code! 
+### Warning: Experimental Code / Proof of Concept! Not yet intended for production use.
 ### You can't use it for anything useful unless you know what you're doing.
   
 ## Features:
