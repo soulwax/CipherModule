@@ -32,7 +32,7 @@ public class CryptoMain {
     public static void main(String[] args) throws Exception {
         // Reading data from user
         String message;
-        String algorithm = "";
+        String algorithm = "SHA-256";
         String userName = "user";
         String password = "changeit";
         if(args.length == 0) {
@@ -55,7 +55,7 @@ public class CryptoMain {
                 System.out.println("Sorry, wrong username/password");
             }
             scanner.close();
-            algorithm = scanner.nextLine();
+
         } else {
             algorithm += args[0];
             StringBuilder argsAppended = new StringBuilder();
