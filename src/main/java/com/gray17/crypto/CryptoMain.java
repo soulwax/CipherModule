@@ -207,7 +207,8 @@ public class CryptoMain {
         try {
             CryptoMain.safeStore.initSafeStore(plainTextPass);
         } catch (IOException e) {
-
+            System.out.println("Could not write certs to storage. Check your write permissions and the following stack trace...");
+            e.printStackTrace();
         } catch (CertificateException e) {
             System.out.println("Sorry, your cert isn't valid, try again.");
             e.printStackTrace();
