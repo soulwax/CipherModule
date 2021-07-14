@@ -9,6 +9,9 @@ Use: execute jar by giving the following args:
 - argument 0: encryption method
 - argument 1...x: message to encrypt with said method
 
+Remove provided default maven argument, add no arguments for execution and you will be prompted to give the args
+during execution.
+
 Supported encryption methods: SHA-256, SHA-1, MD5
 
 Key Generator Method: DES
