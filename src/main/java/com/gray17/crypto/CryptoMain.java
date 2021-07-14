@@ -41,10 +41,8 @@ public class CryptoMain {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException {
         CryptoMain cryptoMain = new CryptoMain();
         cryptoMain.authenticator = new Authenticator();
-
-        if(args.length == 0) {
+        if(args.length <= 3) {
             cryptoMain.userInput();
-            cryptoMain.authenticator.signUp(cryptoMain.inputUser, cryptoMain.inputPassword);
         } else {
             cryptoMain.inputAlgorithm = args[0];
             cryptoMain.inputUser = args[1];
@@ -53,12 +51,15 @@ public class CryptoMain {
 
             for(int i = 3; i < args.length; i++) {
                 argsAppended.append(args[i]);
-                if(i == (args.length-1)) break;
+                if(i == args.length-1) break;
                 argsAppended.append(" ");
             }
             cryptoMain.inputMessage = argsAppended.toString();
         }
-        System.out.println("Dear " + cryptoMain.inputUser + ", your message is: " + cryptoMain.inputMessage);
+
+        // Super secure but reinventing the wheel
+        cryptoMain.authenticator.signUp(cryptoMain.inputUser, cryptoMain.inputPassword);
+
         boolean status = cryptoMain.authenticator.authenticateUser(cryptoMain.inputUser, cryptoMain.inputPassword);
         if (status) {
             System.out.println("Logged in!");
@@ -159,7 +160,6 @@ public class CryptoMain {
         cryptoMain.writeEncryptionResults(logFileName, macResult);
 
         //Init Java Certificate Storage Unit with default pass "changeit"
-
         cryptoMain.initSafeStore(cryptoMain.inputPassword);
     }
 
@@ -173,8 +173,6 @@ public class CryptoMain {
             logFile = new File(fileName);
             if(logFile.createNewFile()) {
                 System.out.println("Created new Log File: " + logFile.getName() + " - Path: " + logFile.getPath());
-            } else {
-                System.out.println("Log file already exists, skipping creation...");
             }
         } catch (IOException e) {
             System.out.println("An error occurred while trying to create a log file.");
@@ -187,7 +185,7 @@ public class CryptoMain {
             bufferedWriter.append(results);
             bufferedWriter.newLine();
             bufferedWriter.close();
-            System.out.println("Successfully logged result");
+            System.out.println("Encrypted message was saved in \"./Encryption-Results.txt\"");
         } catch (IOException e) {
             System.out.println("An error occurred while trying to write to the log file.");
             e.printStackTrace();
@@ -235,7 +233,7 @@ public class CryptoMain {
         try {
             this.safeStore.initSafeStore(plainTextPass);
         } catch (IOException e) {
-            System.out.println("Could not write certs to storage. Check your write permissions and the following stack trace...");
+            System.out.println("Wrong password? See stack-trace for details.");
             e.printStackTrace();
         } catch (CertificateException e) {
             System.out.println("Sorry, your cert isn't valid, try again.");
@@ -246,8 +244,6 @@ public class CryptoMain {
         } catch (KeyStoreException e) {
             System.out.println("Your key couldn't be stored. See stack trace for further information...");
             e.printStackTrace();
-        } finally {
-            System.out.println("SafeStore Initialized successfully!");
         }
     }
 
