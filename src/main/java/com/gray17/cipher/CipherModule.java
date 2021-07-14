@@ -1,8 +1,7 @@
-package com.gray17.crypto;
+package com.gray17.cipher;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
-import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 // SHA-1:
 // a77b25143e5db8fc8447970b8e04bc917793b
 
-public class CryptoMain {
+public class CipherModule {
 
     private SafeStore safeStore;
     private Authenticator authenticator;
@@ -40,14 +39,14 @@ public class CryptoMain {
      * @throws InvalidKeyException Thrown when an invalid key is used
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException {
-        CryptoMain cryptoMain = new CryptoMain();
-        cryptoMain.authenticator = new Authenticator();
+        CipherModule cipherModule = new CipherModule();
+        cipherModule.authenticator = new Authenticator();
         if(args.length <= 3) {
-            cryptoMain.userInput();
+            cipherModule.userInput();
         } else {
-            cryptoMain.inputAlgorithm = args[0];
-            cryptoMain.inputUser = args[1];
-            cryptoMain.inputPassword = args[2];
+            cipherModule.inputAlgorithm = args[0];
+            cipherModule.inputUser = args[1];
+            cipherModule.inputPassword = args[2];
             StringBuilder argsAppended = new StringBuilder();
 
             for(int i = 3; i < args.length; i++) {
@@ -55,13 +54,13 @@ public class CryptoMain {
                 if(i == args.length-1) break;
                 argsAppended.append(" ");
             }
-            cryptoMain.inputMessage = argsAppended.toString();
+            cipherModule.inputMessage = argsAppended.toString();
         }
 
         // Super secure but reinventing the wheel
-        cryptoMain.authenticator.signUp(cryptoMain.inputUser, cryptoMain.inputPassword);
+        cipherModule.authenticator.signUp(cipherModule.inputUser, cipherModule.inputPassword);
 
-        boolean status = cryptoMain.authenticator.authenticateUser(cryptoMain.inputUser, cryptoMain.inputPassword);
+        boolean status = cipherModule.authenticator.authenticateUser(cipherModule.inputUser, cipherModule.inputPassword);
         if (status) {
             System.out.println("Logged in!");
         } else {
@@ -79,10 +78,10 @@ public class CryptoMain {
          */
 
         //  The actual MessageDigest Object
-        MessageDigest md = MessageDigest.getInstance(cryptoMain.inputAlgorithm);
+        MessageDigest md = MessageDigest.getInstance(cipherModule.inputAlgorithm);
 
         // Passing data to the created MessageDigest Object
-        md.update(cryptoMain.inputMessage.getBytes());
+        md.update(cipherModule.inputMessage.getBytes());
         byte[] digest = md.digest();
         System.out.println("Digest result: " + Arrays.toString(digest));
 
@@ -146,7 +145,7 @@ public class CryptoMain {
         mac.init(key);
 
         //Computing the Mac
-        byte[] bytes = cryptoMain.inputMessage.getBytes();
+        byte[] bytes = cipherModule.inputMessage.getBytes();
         byte[] macResult = mac.doFinal(bytes);
 
         String macResultString = new String(macResult); //Quick reminder: turn bytes into a string again
@@ -158,10 +157,10 @@ public class CryptoMain {
 
 
         //Write results
-        cryptoMain.writeEncryptionResults(logFileName, macResult);
+        cipherModule.writeEncryptionResults(logFileName, macResult);
 
         //Init Java Certificate Storage Unit with default pass "changeit"
-        cryptoMain.initSafeStore(cryptoMain.inputPassword);
+        cipherModule.initSafeStore(cipherModule.inputPassword);
     }
 
     private void writeEncryptionResults(String fileName, byte[] results) {

@@ -1,4 +1,4 @@
-package com.gray17.crypto;
+package com.gray17.cipher;
 
 // Each user has a unique salt
 // This salt must be recomputed during password change

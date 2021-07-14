@@ -1,4 +1,4 @@
-package com.gray17.crypto;
+package com.gray17.cipher;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;

@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <exec.mainClass>com.gray17.crypto.CryptoMain</exec.mainClass>
+        <exec.mainClass>com.gray17.cipher.CipherModule</exec.mainClass>
         <exec.args></exec.args>
     </properties>
     <build>
