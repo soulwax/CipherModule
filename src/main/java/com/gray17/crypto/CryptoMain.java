@@ -30,7 +30,7 @@ public class CryptoMain {
 
     private SafeStore safeStore;
     private Authenticator authenticator;
-
+    private String inputUser, inputPassword, inputMessage, inputAlgorithm = "SHA-256";
     /**
      * Supplies command-line arguments as an array of String objects
      * @param args args[0]: algorithm (default: SHA-256) args[1]: username (default: user) args[2]: password (default: changeit) args[3+] [message]
@@ -40,34 +40,15 @@ public class CryptoMain {
      */
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException {
         CryptoMain cryptoMain = new CryptoMain();
-
-        String message;
-        String algorithm = "SHA-256";
-        String userName = "user";
-        String inputUser, inputPass;
-
         cryptoMain.authenticator = new Authenticator();
-        String password = "changeit";
+
         if(args.length == 0) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter the message");
-
-            message = scanner.nextLine();
-            cryptoMain.authenticator.signUp(userName, password);
-
-            System.out.println("Please enter username:");
-            inputUser = scanner.nextLine();
-
-            System.out.println("Please enter password:");
-            inputPass = scanner.nextLine();
-
-            scanner.close();
-
-        // Example args input: SHA-256 user changeit Hi how are you
+            cryptoMain.userInput();
+            cryptoMain.authenticator.signUp(cryptoMain.inputUser, cryptoMain.inputPassword);
         } else {
-            algorithm = args[0];
-            inputUser = args[1];
-            inputPass = args[2];
+            cryptoMain.inputAlgorithm = args[0];
+            cryptoMain.inputUser = args[1];
+            cryptoMain.inputPassword = args[2];
             StringBuilder argsAppended = new StringBuilder();
 
             for(int i = 3; i < args.length; i++) {
@@ -75,10 +56,10 @@ public class CryptoMain {
                 if(i == (args.length-1)) break;
                 argsAppended.append(" ");
             }
-            message = argsAppended.toString();
+            cryptoMain.inputMessage = argsAppended.toString();
         }
-        System.out.println("Dear " + inputUser + ", your message is: " + message);
-        boolean status = cryptoMain.authenticator.authenticateUser(inputUser, inputPass);
+        System.out.println("Dear " + cryptoMain.inputUser + ", your message is: " + cryptoMain.inputMessage);
+        boolean status = cryptoMain.authenticator.authenticateUser(cryptoMain.inputUser, cryptoMain.inputPassword);
         if (status) {
             System.out.println("Logged in!");
         } else {
@@ -96,10 +77,10 @@ public class CryptoMain {
          */
 
         //  The actual MessageDigest Object
-        MessageDigest md = MessageDigest.getInstance(algorithm);
+        MessageDigest md = MessageDigest.getInstance(cryptoMain.inputAlgorithm);
 
         // Passing data to the created MessageDigest Object
-        md.update(message.getBytes());
+        md.update(cryptoMain.inputMessage.getBytes());
         byte[] digest = md.digest();
         System.out.println("Digest result: " + Arrays.toString(digest));
 
@@ -163,7 +144,7 @@ public class CryptoMain {
         mac.init(key);
 
         //Computing the Mac
-        byte[] bytes = message.getBytes();
+        byte[] bytes = cryptoMain.inputMessage.getBytes();
         byte[] macResult = mac.doFinal(bytes);
 
         String macResultString = new String(macResult); //Quick reminder: turn bytes into a string again
@@ -179,7 +160,7 @@ public class CryptoMain {
 
         //Init Java Certificate Storage Unit with default pass "changeit"
 
-        cryptoMain.initSafeStore(password);
+        cryptoMain.initSafeStore(cryptoMain.inputPassword);
     }
 
     private void writeEncryptionResults(String fileName, byte[] results) {
@@ -268,6 +249,21 @@ public class CryptoMain {
         } finally {
             System.out.println("SafeStore Initialized successfully!");
         }
+    }
+
+    private void userInput() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please enter username:");
+        this.inputUser = scanner.nextLine();
+
+        System.out.println("Please enter password:");
+        this.inputPassword = scanner.nextLine();
+
+        System.out.println("Enter the message");
+        this.inputMessage = scanner.nextLine();
+
+        scanner.close();
     }
 }
 
