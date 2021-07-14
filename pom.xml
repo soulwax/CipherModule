@@ -6,14 +6,14 @@
 
     <groupId>com.gray17</groupId>
     <artifactId>CryptoPractice</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <exec.mainClass>com.gray17.crypto.CryptoMain</exec.mainClass>
-        <exec.args>SHA-256 Hello how are you</exec.args>
+        <exec.args></exec.args>
     </properties>
     <build>
         <plugins>

@@ -28,46 +28,60 @@ public class CryptoMain {
 
     private static SafeStore safeStore;
     private static Authenticator authenticator;
-    /** args: 0: [algorithm] 1...2...n: [message to digest] **/
+
+    /**
+     *  args: 0: [algorithm] (default: SHA-256)
+     *  args: 1: [username] (default: user)
+     *  args: 2: [password] (default: changeit)
+     *  args: 3...n: [message]
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
-        // Reading data from user
         String message;
         String algorithm = "SHA-256";
         String userName = "user";
         String password = "changeit";
+        String inputUser, inputPass;
+
+        authenticator = new Authenticator();
         if(args.length == 0) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the message");
-            message = scanner.nextLine();
 
+            message = scanner.nextLine();
             authenticator.signUp(userName, password);
 
             System.out.println("Please enter username:");
-            String inputUser = scanner.nextLine();
+            inputUser = scanner.nextLine();
 
             System.out.println("Please enter password:");
-            String inputPass = scanner.nextLine();
+            inputPass = scanner.nextLine();
 
-            boolean status = authenticator.authenticateUser(inputUser, inputPass);
-            if (status) {
-                System.out.println("Logged in!");
-            } else {
-                System.out.println("Sorry, wrong username/password");
-            }
             scanner.close();
 
+
         } else {
+            // TODO: Process args accordingly
             algorithm += args[0];
+            inputUser = args[1];
+            inputPass = args[2];
             StringBuilder argsAppended = new StringBuilder();
-            for(int i = 1; i < args.length; i++) {
+
+            for(int i = 3; i < args.length; i++) {
                 argsAppended.append(args[i]);
                 if(i == (args.length-1)) break;
                 argsAppended.append(" ");
             }
             message = argsAppended.toString();
-            System.out.println("Message from Arguments: " + message);
+            System.out.println("Dear " + inputUser + ", your message is: " + message);
         }
-
+        boolean status = authenticator.authenticateUser(inputUser, inputPass);
+        if (status) {
+            System.out.println("Logged in!");
+        } else {
+            System.out.println("Sorry, wrong username/password");
+        }
         /**
          * A hash function is useful. It's a mathematical function converting
          * one numerical value into another compressed value.
