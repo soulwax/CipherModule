@@ -2,6 +2,7 @@ package com.gray17.crypto;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -226,10 +227,10 @@ public class CryptoMain {
         try {
             this.safeStore = new SafeStore();
         } catch (KeyStoreException e) {
-            System.out.println("Your SafeStore object could not be initialized. Stack Trace for further information following...");
+            System.out.println("KeyStoreException or NoSuchAlgorithmException - " +
+                    "Your SafeStore object could not be initialized. Stack Trace for further information following...");
             e.printStackTrace();
         }
-
         try {
             this.safeStore.initSafeStore(plainTextPass);
         } catch (IOException e) {
@@ -243,6 +244,9 @@ public class CryptoMain {
             e.printStackTrace();
         } catch (KeyStoreException e) {
             System.out.println("Your key couldn't be stored. See stack trace for further information...");
+            e.printStackTrace();
+        } catch (UnrecoverableEntryException e) {
+            System.out.println("The binary entry could not be recovered. See stacktrace for details...");
             e.printStackTrace();
         }
     }

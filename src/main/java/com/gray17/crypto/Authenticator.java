@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class Authenticator {
 
-    // TODO: NOT FOR PRODUCTION USE. SIMULATES DATABASE.
+    // On the server, this gets replaced by an encrypted database, but you could use this for production instead.
+    // Just make sure to make it persistent then. Or keep using the cert keystore only.
     private final Map<String, UserInfo> userDatabase = new HashMap<>();
 
     public Authenticator() {
