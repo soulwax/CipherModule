@@ -1,12 +1,15 @@
 # Crypto Module (any Java backend)
-### Warning: Experimental Code / Proof of Concept! Not yet intended for production use.
-### You can't use it for anything useful unless you know what you're doing.
+### Proof of Concept! 
+### You should know what you're doing when you intend to use this module.
+### Mostly snippets embedded into CatCraft.
   
 ### Features:
   - Encrypts -args, outputs encrypted result into a log file. 
   - Authenticates a user using the current industry standard of salting and hash mapping.
   - Manual input method.
-
+  - Creates a secure key pair server side
+  - Encrypts and decrypts using said key pairs
+  - The cipher is cached and garbage collected
 
 ### Arguments when not using manual input:
 - argument 0: encryption method (SHA-256, MD5, SHA-1)
